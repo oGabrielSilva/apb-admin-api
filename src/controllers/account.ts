@@ -10,7 +10,6 @@ import sessionCreate from './session'
 const salt = bcryptjs.genSaltSync()
 
 async function signIn(req: Request, res: Response) {
-  console.log(req.body)
   try {
     const body = req.body as TUserSignIn
     if (!validator.isEmail(body.email)) {
@@ -47,7 +46,6 @@ async function signIn(req: Request, res: Response) {
 }
 
 async function signUp(req: Request, res: Response) {
-  console.log(req.body)
   try {
     const body = req.body as TUser
     if (!validator.isEmail(body.email)) {
@@ -58,18 +56,18 @@ async function signUp(req: Request, res: Response) {
       exception(res, 400, 'provided password is too small')
       return
     }
-    if (body.name.length < 2 || body.lastname.length < 2) {
+    if (body.name.length < 2 || body.lastName.length < 2) {
       exception(res, 400, 'provided name or last name is too small')
       return
     }
-    const { email, lastname, name } = body
+    const { email, lastName, name } = body
     const password = bcryptjs.hashSync(body.password, salt)
     const userByEmail = await User.findOne({ email })
     if (!userByEmail) {
       exception(res, 400, 'provided email is already in use')
       return
     }
-    const user = await User.create({ name, lastname, email, password })
+    const user = await User.create({ name, lastName, email, password })
     const session = await sessionCreate(user._id)
     res.status(200).json({
       session: { uid: session.uid },

@@ -7,7 +7,7 @@ export type TUserSignIn = {
 
 export interface TUser extends TUserSignIn {
   name: string
-  lastname: string
+  lastName: string
   avatar?: string
   lastLogin: Date
   active: boolean
