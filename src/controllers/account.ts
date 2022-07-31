@@ -63,7 +63,7 @@ async function signUp(req: Request, res: Response) {
     const { email, lastName, name } = body
     const password = bcryptjs.hashSync(body.password, salt)
     const userByEmail = await User.findOne({ email })
-    if (!userByEmail) {
+    if (userByEmail) {
       exception(res, 400, 'provided email is already in use')
       return
     }
