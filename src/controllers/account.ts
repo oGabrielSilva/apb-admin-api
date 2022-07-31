@@ -12,6 +12,7 @@ const salt = bcryptjs.genSaltSync()
 async function signIn(req: Request, res: Response) {
   try {
     const body = req.body as TUserSignIn
+    console.log(body)
     if (!validator.isEmail(body.email)) {
       exception(res, 400, 'email provided is inválid')
       return
@@ -71,7 +72,10 @@ async function signUp(req: Request, res: Response) {
     const session = await sessionCreate(user._id)
     res
       .status(200)
-      .json({ session: { uid: session.uid }, user: { name: user.name, email: user.email } })
+      .json({
+        session: { uid: session.uid },
+        user: { name: user.name, email: user.email },
+      })
   } catch (error) {
     if (config.devMode && error instanceof Error) {
       exception(res, 404, error.message)
